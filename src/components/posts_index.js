@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { fetchPosts } from '../actions';
 
 class PostsIndex extends Component {
@@ -22,6 +23,11 @@ class PostsIndex extends Component {
   render() {
     return (
       <div>
+        <div className="text-xs-right">
+          <Link className="btn btn-primary" to="/posts/new">
+            Add a Post
+          </Link>
+        </div>
         <h3>Posts</h3>
         <ul className="list-group">
           {this.renderPosts()}
@@ -37,7 +43,12 @@ function mapStateToProps(state) {
   return { posts: state.posts };
 }
 
-// Rather than defining a separate mapDispatchToProps function, we can
-// do this. We still have access to this.props.fetchPosts inside the
-// component.
+
+// function mapDispatchToProps(dispatch) {
+//   return bindActionCreators({ fetchPosts }, dispatch);
+// }
+//
+// export default connect(mapStateToProps, mapDispatchToProps)(PostsIndex);
+
+// The below is a shortcut for doing the above.
 export default connect(mapStateToProps, { fetchPosts })(PostsIndex);
