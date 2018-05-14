@@ -19,15 +19,27 @@ class PostsNew extends Component {
   // We can pass arbitrary properties into the field argument by adding them
   // to the Field component (like label).
   renderField(field) {
+    // This destructuring pulls off the properties touched and error from the
+    // meta object.
+    const { meta: { touched, error } } = field;
+
+    // So instead of doing this
+    // const className = `form-group ${field.meta.touched && field.meta.error ? 'has-danger' : ''}`;
+
+    // we can do this:
+    const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+
     return (
-      <div className="form-group">
+      <div className={className}>
         <label>{field.label}</label>
         <input
           className="form-control"
           type="text"
           {...field.input}
         />
-        {field.meta.error}
+        <div className="text-help">
+          {touched ? error : ''}
+        </div>
       </div>
     );
   }
