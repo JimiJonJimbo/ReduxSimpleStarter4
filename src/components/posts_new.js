@@ -27,13 +27,38 @@ class PostsNew extends Component {
           type="text"
           {...field.input}
         />
+        {field.meta.error}
       </div>
     );
   }
 
+  onSubmit(values) {
+    console.log(values);
+  }
+
   render() {
+    // At the bottom, we wired up reduxForm to the PostsNew component in the
+    // same way we wired up the connect helper in the past. The connect helper
+    // was used to add additional properties to the component. reduxForm does
+    // the same thing, adding additional properties. handleSubmit is a property
+    // that's passed to the component on behalf of reduxForm.
+    const { handleSubmit } = this.props;
+
+    // The errors.title, errors.categories, and errors.content below in the
+    // validate function are chosen so they will line up with the names here.
+    // When redux-form renders the form, it looks at the name property and says
+    // "if the errors object has a property of title, I'm going to call
+    // renderField and pass along whatever error message is there under the
+    // property title."
+    //
+    // handleSubmit takes a function that we define. It runs the redux-form
+    // side of things. If everything looks good and it is valid, then call
+    // the this.onSubmit callback. We are calling .bind(this) because we are
+    // passing this.onSubmit as a callback function that will be executed
+    // in a different context, so the .bind(this) makes sure we will still have
+    // access to the correct this when it gets run.
     return (
-      <form>
+      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
         <Field
           label="Title"
           name="title"
@@ -49,6 +74,7 @@ class PostsNew extends Component {
           name="content"
           component={this.renderField}
         />
+        <button type="submit" className="btn btn-primary">Submit</button>
       </form>
     );
   }
